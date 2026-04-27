@@ -11,15 +11,15 @@ COPY . .
 
 RUN swift build --configuration release
 
-# Run stage
-FROM swift:slim
+# Run stage — use the full Swift image to ensure all runtime libraries are present
+FROM swift:latest
 
 WORKDIR /app
 
-# Copy the compiled binary from the build stage
-COPY --from=builder /app/.build/release /app/.build/release
+# Copy the full build artefacts and source so swift run is available as a fallback
+COPY --from=builder /app /app
 
 EXPOSE 8080
 
-# Run the executable — replace 'App' with your actual target name if different
-CMD ["/app/.build/release/App"]
+# Run the App target via swift run so the toolchain resolves any runtime dependencies
+CMD ["swift", "run", "--configuration", "release"]
