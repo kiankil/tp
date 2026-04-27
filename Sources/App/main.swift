@@ -42,7 +42,8 @@ final class HTTPServer {
             throw ServerError.listenFailed
         }
 
-        print("Server listening on port \(port)")
+        print("✅ Server listening on port \(port)")
+        fflush(stdout)
 
         while true {
             var clientAddress = sockaddr_in()
@@ -117,6 +118,7 @@ let server = HTTPServer(port: 8080)
 do {
     try server.start()
 } catch {
-    print("Failed to start server: \(error)")
+    print("❌ Failed to start server: \(error)")
+    fflush(stdout)
     exit(1)
 }
