@@ -3,11 +3,8 @@ FROM swift:latest AS builder
 
 WORKDIR /app
 
-# Copy package manifest and resolve dependencies first (layer caching)
+# Copy package manifest first for better layer caching
 COPY Package.swift ./
-COPY Package.resolved ./
-
-RUN swift package resolve
 
 # Copy remaining source files and build in release mode
 COPY . .
